@@ -5,8 +5,8 @@
   "version": "1.0.0",
   "deployments": {
     "testnet": {
-      "oracleProgramId": "21d7dc519aa45edc18bcb60c242d941c1c9834177ba4ab9ab6893837deae9f69",
-      "dateDeployed": "2026-04-06T00:00:00.000Z",
+      "oracleProgramId": "dfcef70119a614ee1e485e79d427d7a39d070adb91e3206e3ae460c2121f7437",
+      "dateDeployed": "2026-04-06T14:30:00.000Z",
       "rustToolchain": "1.85.0"
     }
   },
