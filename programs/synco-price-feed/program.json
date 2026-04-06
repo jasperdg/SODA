@@ -1,0 +1,80 @@
+{
+  "slug": "synco-price-feed",
+  "name": "Synco Price Feed",
+  "description": "Fetches a single asset's USD price from Pyth via SEDA proxies (Triton with Hermes fallback) and encodes it as a 64-byte binary payload for on-chain consumption via FastAdapter.",
+  "version": "1.0.0",
+  "deployments": {
+    "testnet": {
+      "oracleProgramId": "21d7dc519aa45edc18bcb60c242d941c1c9834177ba4ab9ab6893837deae9f69",
+      "dateDeployed": "2026-04-06T00:00:00.000Z",
+      "rustToolchain": "1.85.0"
+    }
+  },
+  "inputSchema": {
+    "type": "object",
+    "required": ["pyth_id"],
+    "properties": {
+      "pyth_id": {
+        "type": "string",
+        "description": "Pyth price feed ID (hex, 0x-prefixed)"
+      },
+      "quote_asset": {
+        "type": "string",
+        "description": "Optional Pyth feed ID for a quote asset to divide by"
+      },
+      "scale": {
+        "type": "integer",
+        "description": "Optional power-of-10 scaling factor applied to the price"
+      }
+    }
+  },
+  "outputSchema": {
+    "type": "object",
+    "description": "64-byte binary: [16 zero bytes][16-byte u128 price BE][24 zero bytes][8-byte u64 timestamp BE]",
+    "properties": {
+      "price": {
+        "type": "integer",
+        "description": "u128 price value (big-endian at byte offset 16)"
+      },
+      "timestamp": {
+        "type": "integer",
+        "description": "u64 Unix timestamp in seconds (big-endian at byte offset 56)"
+      }
+    }
+  },
+  "dataSources": [
+    {
+      "id": "pyth",
+      "name": "Pyth Network",
+      "url": "https://pyth.network",
+      "role": "primary"
+    }
+  ],
+  "tags": [
+    "crypto",
+    "basic",
+    "real-time",
+    "pyth",
+    "community"
+  ],
+  "repository": "https://github.com/jasperdg/synco",
+  "author": {
+    "name": "Synco Finance",
+    "github": "jasperdg"
+  },
+  "examples": [
+    {
+      "name": "ETH/USD price",
+      "input": {
+        "pyth_id": "0xff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace"
+      }
+    },
+    {
+      "name": "ETH/USD scaled by 1e8",
+      "input": {
+        "pyth_id": "0xff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace",
+        "scale": 8
+      }
+    }
+  ]
+}

@@ -1,0 +1,91 @@
+{
+  "$schema": "../schemas/soda-list.schema.json#/properties/tags",
+  "crypto": {
+    "name": "Cryptocurrency",
+    "description": "Programs that fetch cryptocurrency prices and data"
+  },
+  "equities": {
+    "name": "Equities",
+    "description": "Programs for stock and equity market data"
+  },
+  "fx": {
+    "name": "Foreign Exchange",
+    "description": "Programs for foreign exchange rates"
+  },
+  "futures": {
+    "name": "Futures",
+    "description": "Programs for futures contract data"
+  },
+  "commodities": {
+    "name": "Commodities",
+    "description": "Programs for commodity prices"
+  },
+  "rates": {
+    "name": "Interest Rates",
+    "description": "Programs for interest rate data"
+  },
+  "basic": {
+    "name": "Basic",
+    "description": "Simple price feed programs without complex processing"
+  },
+  "ema": {
+    "name": "EMA",
+    "description": "Programs using Exponential Moving Average calculations"
+  },
+  "session-aware": {
+    "name": "Session Aware",
+    "description": "Programs aware of market trading sessions"
+  },
+  "batch": {
+    "name": "Batch",
+    "description": "Programs that process multiple assets in a single request"
+  },
+  "real-time": {
+    "name": "Real-time",
+    "description": "Programs providing real-time price data"
+  },
+  "pyth": {
+    "name": "Pyth Network",
+    "description": "Programs using Pyth Network as data source"
+  },
+  "pyth-pro": {
+    "name": "Pyth Pro",
+    "description": "Programs using Pyth Pro (Benchmarks) API"
+  },
+  "dxfeed": {
+    "name": "dxFeed",
+    "description": "Programs using dxFeed as data source"
+  },
+  "stork": {
+    "name": "Stork",
+    "description": "Programs using Stork as data source"
+  },
+  "hyperliquid": {
+    "name": "Hyperliquid",
+    "description": "Programs using Hyperliquid as data source"
+  },
+  "multi-source": {
+    "name": "Multi-source",
+    "description": "Programs aggregating data from multiple sources"
+  },
+  "discount": {
+    "name": "Discount Calculation",
+    "description": "Programs that calculate discount rates"
+  },
+  "candle": {
+    "name": "Candlestick",
+    "description": "Programs providing OHLC candlestick data"
+  },
+  "bid-ask": {
+    "name": "Bid-Ask",
+    "description": "Programs providing bid and ask prices"
+  },
+  "official": {
+    "name": "Official",
+    "description": "Officially maintained by SEDA Protocol"
+  },
+  "community": {
+    "name": "Community",
+    "description": "Community-contributed programs"
+  }
+}

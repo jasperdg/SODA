@@ -1,0 +1,201 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://seda.xyz/schemas/soda-program.schema.json",
+  "title": "SODA Program Entry",
+  "description": "Schema for a SEDA Oracle Program entry in the SODA registry",
+  "type": "object",
+  "required": ["slug", "name", "description", "version", "deployments", "author"],
+  "additionalProperties": false,
+  "properties": {
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "description": "URL-friendly unique identifier for the program"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100,
+      "description": "Human-readable name of the program"
+    },
+    "description": {
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 1000,
+      "description": "Brief description of what the program does"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:-[a-zA-Z0-9.]+)?$",
+      "description": "Semantic version of the program"
+    },
+    "deployments": {
+      "type": "object",
+      "description": "Network deployments of the program",
+      "minProperties": 1,
+      "additionalProperties": false,
+      "properties": {
+        "mainnet": { "$ref": "#/$defs/deployment" },
+        "testnet": { "$ref": "#/$defs/deployment" },
+        "devnet": { "$ref": "#/$defs/deployment" }
+      }
+    },
+    "inputSchema": {
+      "$ref": "#/$defs/jsonSchema",
+      "description": "JSON Schema describing the program's input format"
+    },
+    "outputSchema": {
+      "$ref": "#/$defs/jsonSchema",
+      "description": "JSON Schema describing the program's output format"
+    },
+    "dataSources": {
+      "type": "array",
+      "description": "External data sources used by the program",
+      "items": {
+        "type": "object",
+        "required": ["id", "name"],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the data source"
+          },
+          "name": {
+            "type": "string",
+            "description": "Human-readable name of the data source"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "description": "URL to the data source documentation"
+          },
+          "role": {
+            "type": "string",
+            "enum": ["primary", "secondary", "fallback"],
+            "description": "Role of this data source in the program"
+          }
+        }
+      }
+    },
+    "tags": {
+      "type": "array",
+      "description": "Tags categorizing the program",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+      },
+      "uniqueItems": true
+    },
+    "repository": {
+      "type": "string",
+      "format": "uri",
+      "description": "URL to the source code repository"
+    },
+    "documentation": {
+      "type": "string",
+      "format": "uri",
+      "description": "URL to external documentation"
+    },
+    "author": {
+      "type": "object",
+      "required": ["name"],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of the author or organization"
+        },
+        "github": {
+          "type": "string",
+          "description": "GitHub username or organization"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL to author's website"
+        }
+      }
+    },
+    "examples": {
+      "type": "array",
+      "description": "Example inputs for the program",
+      "items": {
+        "type": "object",
+        "required": ["name", "input"],
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the example"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of what this example demonstrates"
+          },
+          "input": {
+            "type": "object",
+            "description": "Example input data"
+          },
+          "expectedOutput": {
+            "type": "object",
+            "description": "Expected output for this input (optional)"
+          }
+        }
+      }
+    },
+    "deprecated": {
+      "type": "boolean",
+      "description": "Whether this program is deprecated"
+    },
+    "deprecationReason": {
+      "type": "string",
+      "description": "Reason for deprecation, if applicable"
+    },
+    "replacedBy": {
+      "type": "string",
+      "description": "Slug of the program that replaces this one"
+    }
+  },
+  "$defs": {
+    "deployment": {
+      "type": "object",
+      "required": ["oracleProgramId", "dateDeployed"],
+      "additionalProperties": false,
+      "properties": {
+        "oracleProgramId": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$",
+          "description": "The on-chain program ID (64 hex characters)"
+        },
+        "dateDeployed": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO 8601 timestamp of deployment"
+        },
+        "gitCommitHash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{40}$",
+          "description": "Git commit hash of the deployed code"
+        },
+        "transactionHash": {
+          "type": "string",
+          "description": "Transaction hash of the deployment"
+        },
+        "rustToolchain": {
+          "type": "string",
+          "description": "Rust toolchain version used to compile the WASM binary (e.g. '1.82.0')"
+        }
+      }
+    },
+    "jsonSchema": {
+      "type": "object",
+      "description": "A JSON Schema object",
+      "properties": {
+        "type": { "type": "string" },
+        "required": { "type": "array", "items": { "type": "string" } },
+        "properties": { "type": "object" },
+        "additionalProperties": { "type": "boolean" }
+      }
+    }
+  }
+}

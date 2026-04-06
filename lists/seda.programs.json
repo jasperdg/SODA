@@ -1,0 +1,276 @@
+{
+  "name": "SEDA Official Oracle Programs",
+  "description": "The official registry of SEDA oracle programs including community contributions",
+  "timestamp": "2026-04-06T15:07:14.214Z",
+  "version": {
+    "major": 1,
+    "minor": 0,
+    "patch": 5
+  },
+  "keywords": [
+    "seda",
+    "oracle",
+    "price-feed",
+    "blockchain",
+    "defi"
+  ],
+  "tags": {
+    "crypto": {
+      "name": "Cryptocurrency",
+      "description": "Programs that fetch cryptocurrency prices and data"
+    },
+    "equities": {
+      "name": "Equities",
+      "description": "Programs for stock and equity market data"
+    },
+    "fx": {
+      "name": "Foreign Exchange",
+      "description": "Programs for foreign exchange rates"
+    },
+    "futures": {
+      "name": "Futures",
+      "description": "Programs for futures contract data"
+    },
+    "commodities": {
+      "name": "Commodities",
+      "description": "Programs for commodity prices"
+    },
+    "rates": {
+      "name": "Interest Rates",
+      "description": "Programs for interest rate data"
+    },
+    "basic": {
+      "name": "Basic",
+      "description": "Simple price feed programs without complex processing"
+    },
+    "ema": {
+      "name": "EMA",
+      "description": "Programs using Exponential Moving Average calculations"
+    },
+    "session-aware": {
+      "name": "Session Aware",
+      "description": "Programs aware of market trading sessions"
+    },
+    "batch": {
+      "name": "Batch",
+      "description": "Programs that process multiple assets in a single request"
+    },
+    "real-time": {
+      "name": "Real-time",
+      "description": "Programs providing real-time price data"
+    },
+    "pyth": {
+      "name": "Pyth Network",
+      "description": "Programs using Pyth Network as data source"
+    },
+    "pyth-pro": {
+      "name": "Pyth Pro",
+      "description": "Programs using Pyth Pro (Benchmarks) API"
+    },
+    "dxfeed": {
+      "name": "dxFeed",
+      "description": "Programs using dxFeed as data source"
+    },
+    "stork": {
+      "name": "Stork",
+      "description": "Programs using Stork as data source"
+    },
+    "hyperliquid": {
+      "name": "Hyperliquid",
+      "description": "Programs using Hyperliquid as data source"
+    },
+    "multi-source": {
+      "name": "Multi-source",
+      "description": "Programs aggregating data from multiple sources"
+    },
+    "discount": {
+      "name": "Discount Calculation",
+      "description": "Programs that calculate discount rates"
+    },
+    "candle": {
+      "name": "Candlestick",
+      "description": "Programs providing OHLC candlestick data"
+    },
+    "bid-ask": {
+      "name": "Bid-Ask",
+      "description": "Programs providing bid and ask prices"
+    },
+    "official": {
+      "name": "Official",
+      "description": "Officially maintained by SEDA Protocol"
+    },
+    "community": {
+      "name": "Community",
+      "description": "Community-contributed programs"
+    }
+  },
+  "programs": [
+    {
+      "slug": "synco-cross-rate",
+      "name": "Synco Cross-Rate",
+      "description": "Derives a cross-rate between two assets by fetching both Pyth prices and dividing base by quote. Returns JSON with the computed rate and timestamp.",
+      "version": "1.0.0",
+      "deployments": {
+        "testnet": {
+          "oracleProgramId": "63dc96c0d973225b61196093401b3243915616a7342ca33c95abbed26b55fd49",
+          "dateDeployed": "2026-04-06T00:00:00.000Z",
+          "rustToolchain": "1.85.0"
+        }
+      },
+      "inputSchema": {
+        "type": "object",
+        "required": [
+          "base_feed_id",
+          "quote_feed_id"
+        ],
+        "properties": {
+          "base_feed_id": {
+            "type": "string",
+            "description": "Pyth feed ID for the base asset (e.g. ETH/USD)"
+          },
+          "quote_feed_id": {
+            "type": "string",
+            "description": "Pyth feed ID for the quote asset (e.g. USDC/USD). The fetcher divides base by quote automatically."
+          },
+          "scale": {
+            "type": "integer",
+            "description": "Optional power-of-10 scaling factor applied to the cross-rate"
+          }
+        }
+      },
+      "outputSchema": {
+        "type": "object",
+        "required": [
+          "cross_rate",
+          "timestamp"
+        ],
+        "properties": {
+          "cross_rate": {
+            "type": "string",
+            "description": "Decimal cross-rate as string (base / quote)"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "ISO 8601 timestamp of the price data"
+          }
+        }
+      },
+      "dataSources": [
+        {
+          "id": "pyth",
+          "name": "Pyth Network",
+          "url": "https://pyth.network",
+          "role": "primary"
+        }
+      ],
+      "tags": [
+        "crypto",
+        "basic",
+        "real-time",
+        "pyth",
+        "community"
+      ],
+      "repository": "https://github.com/jasperdg/synco",
+      "author": {
+        "name": "Synco Finance",
+        "github": "jasperdg"
+      },
+      "examples": [
+        {
+          "name": "ETH/USDC cross-rate",
+          "input": {
+            "base_feed_id": "0xff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace",
+            "quote_feed_id": "0xeaa020c61cc479712813461ce153894a96a6c00b21ed0cfc2798d1f9a9e9c94a"
+          },
+          "expectedOutput": {
+            "cross_rate": "3000.12345",
+            "timestamp": "2026-04-01T12:00:00Z"
+          }
+        }
+      ]
+    },
+    {
+      "slug": "synco-price-feed",
+      "name": "Synco Price Feed",
+      "description": "Fetches a single asset's USD price from Pyth via SEDA proxies (Triton with Hermes fallback) and encodes it as a 64-byte binary payload for on-chain consumption via FastAdapter.",
+      "version": "1.0.0",
+      "deployments": {
+        "testnet": {
+          "oracleProgramId": "21d7dc519aa45edc18bcb60c242d941c1c9834177ba4ab9ab6893837deae9f69",
+          "dateDeployed": "2026-04-06T00:00:00.000Z",
+          "rustToolchain": "1.85.0"
+        }
+      },
+      "inputSchema": {
+        "type": "object",
+        "required": [
+          "pyth_id"
+        ],
+        "properties": {
+          "pyth_id": {
+            "type": "string",
+            "description": "Pyth price feed ID (hex, 0x-prefixed)"
+          },
+          "quote_asset": {
+            "type": "string",
+            "description": "Optional Pyth feed ID for a quote asset to divide by"
+          },
+          "scale": {
+            "type": "integer",
+            "description": "Optional power-of-10 scaling factor applied to the price"
+          }
+        }
+      },
+      "outputSchema": {
+        "type": "object",
+        "description": "64-byte binary: [16 zero bytes][16-byte u128 price BE][24 zero bytes][8-byte u64 timestamp BE]",
+        "properties": {
+          "price": {
+            "type": "integer",
+            "description": "u128 price value (big-endian at byte offset 16)"
+          },
+          "timestamp": {
+            "type": "integer",
+            "description": "u64 Unix timestamp in seconds (big-endian at byte offset 56)"
+          }
+        }
+      },
+      "dataSources": [
+        {
+          "id": "pyth",
+          "name": "Pyth Network",
+          "url": "https://pyth.network",
+          "role": "primary"
+        }
+      ],
+      "tags": [
+        "crypto",
+        "basic",
+        "real-time",
+        "pyth",
+        "community"
+      ],
+      "repository": "https://github.com/jasperdg/synco",
+      "author": {
+        "name": "Synco Finance",
+        "github": "jasperdg"
+      },
+      "examples": [
+        {
+          "name": "ETH/USD price",
+          "input": {
+            "pyth_id": "0xff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace"
+          }
+        },
+        {
+          "name": "ETH/USD scaled by 1e8",
+          "input": {
+            "pyth_id": "0xff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace",
+            "scale": 8
+          }
+        }
+      ]
+    }
+  ]
+}

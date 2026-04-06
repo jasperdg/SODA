@@ -1,0 +1,26 @@
+{
+  "name": "soda-registry",
+  "version": "1.0.0",
+  "description": "SEDA Oracle Directory & Registry - A registry for SEDA oracle program IDs",
+  "type": "module",
+  "scripts": {
+    "validate": "bun run scripts/validate.ts",
+    "build": "bun run scripts/build-list.ts",
+    "sync": "bun run scripts/sync-deployments.ts",
+    "check": "bun run validate && bun run build"
+  },
+  "keywords": [
+    "seda",
+    "oracle",
+    "registry",
+    "blockchain"
+  ],
+  "author": "SEDA Protocol",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/bun": "^1.1.0",
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
+    "typescript": "^5.4.0"
+  }
+}

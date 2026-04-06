@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://seda.xyz/schemas/soda-list.schema.json",
+  "title": "SODA Program List",
+  "description": "Schema for the SEDA Oracle Directory & Registry program list",
+  "type": "object",
+  "required": ["name", "timestamp", "version", "programs"],
+  "additionalProperties": false,
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Name of the program list"
+    },
+    "description": {
+      "type": "string",
+      "description": "Description of this program list"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp of when this list was generated"
+    },
+    "version": {
+      "type": "object",
+      "required": ["major", "minor", "patch"],
+      "additionalProperties": false,
+      "properties": {
+        "major": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Major version - breaking changes"
+        },
+        "minor": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Minor version - new programs added"
+        },
+        "patch": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Patch version - metadata updates"
+        }
+      }
+    },
+    "keywords": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Keywords describing this list"
+    },
+    "tags": {
+      "type": "object",
+      "description": "Tag definitions used in this list",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["name", "description"],
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Display name of the tag"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of what this tag represents"
+          }
+        }
+      }
+    },
+    "logoURI": {
+      "type": "string",
+      "format": "uri",
+      "description": "URI for the list logo"
+    },
+    "programs": {
+      "type": "array",
+      "description": "Array of program entries",
+      "items": {
+        "$ref": "soda-program.schema.json"
+      }
+    }
+  }
+}
