@@ -7,7 +7,7 @@
     "testnet": {
       "oracleProgramId": "861860cacb2ff73de6605b71745473ac1e7cb3a75d2b087d5be33e58a73d340c",
       "dateDeployed": "2026-04-06T14:30:00.000Z",
-      "rustToolchain": "1.85.0"
+      "rustToolchain": "1.90.0"
     }
   },
   "inputSchema": {
